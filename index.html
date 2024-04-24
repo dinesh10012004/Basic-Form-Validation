@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Validation</title>
+<style> html{
+background-image: url(bgimg.jpg); background-size: cover; background-repeat: no-repeat;
+}
+
+body {
+font-family: Arial, sans-serif; margin: 0;
+padding: 0; display: flex;
+justify-content: center; align-items: center; height: 100vh;
+}
+
+.container {
+background-color: #fff; padding: 20px;
+border-radius: 10px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); width: 400px;
+}
+
+
+
+label {
+font-weight: bold;
+}
+
+input[type="text"], input[type="email"],
+ 
+input[type="password"], input[type="checkbox"], input[type="radio"],
+select { /* Added select for dropdown */ width:100%;
+padding: 10px; border-radius: 5px;
+border: 1px solid #ccc; box-sizing: border-box; margin-top: 5px;
+}
+
+input[type="submit"] { background-color: #007bff; color: #fff;
+border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px;
+}
+
+input[type="submit"]:hover { background-color: #0056b3;
+}
+
+.error { color: red;
+font-size: 0.8em;
+}
+
+/* Flexbox for checkbox and radio button */
+.flex-container { display: flex;
+align-items: center;
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Form Validation</h2>
+<form id="myForm">
+<div class="form-group">
+<label for="name">Name:</label>
+ 
+<input type="text" id="name" name="name">
+</div>
+<span class="error" id="nameError"></span><br>
+<div class="form-group">
+<label for="email">Email:</label>
+<input type="email" id="email" name="email">
+</div>
+<span class="error" id="emailError"></span><br>
+<div class="form-group">
+<label for="mobile">Mobile No:</label>
+<input type="text" id="mobile" name="mobile">
+</div>
+<span class="error" id="mobileError"></span><br>
+<div class="form-group">
+<label for="password">Password:</label>
+<input type="password" id="password" name="password">
+</div>
+<span class="error" id="passwordError"></span><br>
+<div class="form-group">
+<label for="gender">Gender:</label><br>
+<div class="flex-container">
+<div class="flex-item">
+<input type="radio" id="male" name="gender" value="male">
+<label for="gender">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Male</label>
+</div>
+<div class="flex-item">
+<input type="radio" id="female" name="gender" value="female">
+<label for="gender">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Female</label>
+</div>
+<div class="flex-item">
+<input type="radio" id="other" name="gender" value="other">
+<label for="gender">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other</label>
+</div>
+</div>
+<span class="error" id="genderError"></span><br>
+</div>
+<div class="form-group"> <!-- Added dropdown menu -->
+<label for="country">Country:</label>
+<select id="country" name="country">
+<option value="">Select Country</option>
+<option value="USA">USA</option>
+<option value="UK">UK</option>
+<option value="Canada">Canada</option>
+<option value="Australia">Australia</option>
+ 
+</select>
+</div>
+<span class="error" id="countryError"></span><br>
+<div class="form-group">
+<div class="flex-container">
+<div class="flex-item">
+<input type="checkbox" id="terms" name="terms">
+</div>
+<div class="flex-item">
+<label for="terms">&nbsp;&nbsp;&nbsp;&nbsp;Agree to terms</label>
+</div>
+</div>
+<span class="error" id="termsError"></span><br>
+</div>
+<input type="submit" value="Submit">
+</form>
+</div>
+
+<script>
+const form = document.getElementById('myForm');
+
+form.addEventListener('submit', function(event) { event.preventDefault();
+if (validateForm()) {
+alert('Form submitted successfully!');
+// You can add code here to send form data to server
+}
+});
+
+function validateForm() { let isValid = true;
+
+const name = document.getElementById('name'); const email = document.getElementById('email'); const mobile = document.getElementById('mobile');
+const password = document.getElementById('password'); const terms = document.getElementById('terms');
+const gender = document.querySelector('input[name="gender"]:checked');
+const country = document.getElementById('country'); // Added country dropdown
+
+const nameError = document.getElementById('nameError'); const emailError = document.getElementById('emailError'); const mobileError = document.getElementById('mobileError');
+const passwordError = document.getElementById('passwordError');
+ 
+const termsError = document.getElementById('termsError'); const genderError = document.getElementById('genderError');
+const countryError = document.getElementById('countryError'); // Added country error span
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; const mobileRegex = /^\d{10}$/;
+
+nameError.textContent = ''; emailError.textContent = ''; mobileError.textContent = ''; passwordError.textContent = ''; termsError.textContent = ''; genderError.textContent = '';
+countryError.textContent = ''; // Cleared country error message
+
+if (name.value.trim() === '') { nameError.textContent = 'Name is required'; isValid = false;
+}
+
+if (!emailRegex.test(email.value.trim())) { emailError.textContent = 'Invalid email format'; isValid = false;
+}
+
+if (!mobileRegex.test(mobile.value.trim())) { mobileError.textContent = 'Invalid mobile number format'; isValid = false;
+}
+
+if (password.value.trim().length < 6) {
+passwordError.textContent = 'Password must be at least 6 characters'; isValid = false;
+}
+
+if (!terms.checked) {
+termsError.textContent = 'Please agree to terms'; isValid = false;
+}
+
+if (!gender) {
+genderError.textContent = 'Please select gender'; isValid = false;
+}
+ 
+
+if (country.value === '') { // Added validation for country dropdown countryError.textContent = 'Please select a country';
+isValid = false;
+}
+
+return isValid;
+}
+</script>
+</body>
+</html>
